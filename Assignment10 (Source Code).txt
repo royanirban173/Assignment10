@@ -1,0 +1,139 @@
+import numpy as np
+import pandas as pd
+
+df=pd.read_csv("https://raw.githubusercontent.com/guipsamora/pandas_exercises/master/06_Stats/US_Baby_Names/US_Baby_Names_right.csv")
+
+df.head()
+
+'''
+OUTPUT
+-----------------------------------------------------------------------------------------
+ 	Unnamed: 0 	Id 	Name 	Year 	Gender 	State 	Count
+0 	11349 	11350 	Emma 	2004 	F 	AK 	62
+1 	11350 	11351 	Madison 	2004 	F 	AK 	48
+2 	11351 	11352 	Hannah 	2004 	F 	AK 	46
+3 	11352 	11353 	Grace 	2004 	F 	AK 	44
+4 	11353 	11354 	Emily 	2004 	F 	AK 	41
+
+'''
+
+#1. Delete unnamed columns
+df.drop(['Unnamed: 0'],axis=1,inplace=True)
+
+df.head()
+'''
+OUTPUT
+-----------------------------------------------------------------------------------------
+
+Id 	Name 	Year 	Gender 	State 	Count
+0 	11350 	Emma 	2004 	F 	AK 	62
+1 	11351 	Madison 	2004 	F 	AK 	48
+2 	11352 	Hannah 	2004 	F 	AK 	46
+3 	11353 	Grace 	2004 	F 	AK 	44
+4 	11354 	Emily 	2004 	F 	AK 	41
+
+'''
+
+#2. Show the distribution of male and female
+df.groupby('Gender').sum().loc[['F','M'],'Count']
+
+'''
+OUTPUT
+---------------------------------------------------------------------------------------------
+
+Gender
+F    16380293
+M    19041199
+Name: Count, dtype: int64
+
+'''
+
+#3. Show the top 5 most preferred names
+dfx=df[['Name','Gender','Count']].groupby('Name').sum()
+
+#3. Show the top 5 most preferred names
+dfx.sort_values(['Count'],ascending=False).head()
+
+'''
+OUTPUT
+----------------------------------------------------------------------------------------------
+
+ 	Count
+Name 	
+Jacob 	242874
+Emma 	214852
+Michael 	214405
+Ethan 	209277
+Isabella 	204798
+
+'''
+
+#4. What is the median name occurence in the dataset
+df.Count.median()
+
+'''
+OUTPUT : 11.0
+'''
+
+#5. Distribution of male and female born count by states
+pd.pivot_table(df, values='Count', index=['State'], columns=['Gender'], aggfunc=np.sum)
+
+'''
+OUTPUT
+--------------------------------------------------------------------------------------------------------------------
+
+Gender 	F 	M
+State 		
+AK 	26250 	37399
+AL 	215308 	260114
+AR 	129712 	162947
+AZ 	368567 	439691
+CA 	2414063 	2670584
+CO 	260805 	313425
+CT 	141350 	171397
+DC 	35276 	47228
+DE 	31312 	41748
+FL 	915422 	1060957
+GA 	549637 	635531
+HI 	37279 	53127
+IA 	144764 	174009
+ID 	72808 	94320
+IL 	695312 	791679
+IN 	344962 	408525
+KS 	147216 	179824
+KY 	210201 	250589
+LA 	221859 	271646
+MA 	294236 	343996
+MD 	269915 	315331
+ME 	43718 	55650
+MI 	480990 	557090
+MN 	276884 	318917
+MO 	307848 	364924
+MS 	127343 	160800
+MT 	31622 	44143
+NC 	501151 	577529
+ND 	30054 	39507
+NE 	88998 	112369
+NH 	45065 	56482
+NJ 	425430 	487900
+NM 	85115 	113542
+NV 	123730 	156037
+NY 	1036009 	1172145
+OH 	598027 	688343
+OK 	184967 	228613
+OR 	172111 	209445
+PA 	593382 	682709
+RI 	35560 	47939
+SC 	197917 	237442
+SD 	34104 	45443
+TN 	336487 	398615
+TX 	1786281 	2005394
+UT 	202892 	245324
+VA 	405503 	466873
+VT 	15079 	21353
+WA 	334944 	395377
+WI 	264921 	311758
+WV 	73800 	93557
+WY 	14107 	21912
+
+'''
